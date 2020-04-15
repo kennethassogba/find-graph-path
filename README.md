@@ -14,11 +14,11 @@ The Cleaning class defines the main storage point for room to clean.
 
 ## fig.py
 fig.py allow us to have smooth visualisation of our graph.
-### Prerequisite
+#### Prerequisite
 [Matplotlib](https://matplotlib.org/) : `python3 -m pip install -U matplotlib`
 
 [NetworkX](https://networkx.github.io/) `python3 -m pip install -U networkx`
-### Get stared:
+#### Get stared:
 Uncomment the graph you want to draw and launch `python3 fig.py`
 > We want to create animation to visualise the cleaning steps of the room but have no enough time to develop that
 
@@ -45,4 +45,5 @@ python3 -m unittest Tests/Test_Room.py
 
 
 > Kenneth Assogba & Alexis Squarcioni.
+
 > March 2020
