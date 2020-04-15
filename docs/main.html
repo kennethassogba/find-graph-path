@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>main.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>main.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Main</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cleaning</span> <span class="kn">import</span> <span class="n">Cleaning</span>
+<span class="kn">import</span> <span class="nn">time</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>This script allows the user to test our algorithm.</p>
+<p>This file can also be imported as a module and contains the following
+functions:</p>
+<pre><code>* formatForClean - returns the good input format for Cleaning class
+* findpath - rerun the Cleaning.cleaning() method several times and only return the optimal path
+* checkpath - check if a path is true
+* setparameters - set iteration and greed interval for an input file
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Used to format the input file for Cleaning class</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">formatForClean</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <h2>Parameters</h2>
+<p>filename : str
+    The input file location</p>
+<h2>Returns</h2>
+<p>nx, ny, nd
+    room lenth and number of robots
+grilleList
+    list of string who tell walls position
+robots : dict
+    &lsquo;robotColor&rsquo;: robotPosition</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>if f.mode == &lsquo;r&rsquo;: #Condition to test if the file is well read</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">line</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>First line</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nd</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Room wall data</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">grilleList</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">nx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>to have list of list of int</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">grilleList</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">number</span><span class="p">)]</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">grilleList</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>to convert in binary</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">grilleList</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;{0:04b}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">grilleList</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>to flat the list of lists</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">grilleList</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">grilleList</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Robots data</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">robotsLines</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">nx</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">nx</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="n">nd</span><span class="p">]</span>
+    <span class="n">robots</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># dict {&#39;B&#39;: 1, &#39;R&#39;: 4}</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">robotsLines</span><span class="p">:</span>
+        <span class="n">couleur</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">ny</span><span class="o">+</span><span class="n">y</span>
+        <span class="n">robots</span><span class="p">[</span><span class="n">couleur</span><span class="p">]</span> <span class="o">=</span> <span class="n">position</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nd</span><span class="p">,</span> <span class="n">grilleList</span><span class="p">,</span> <span class="n">robots</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>rerun the Cleaning.cleaning() method several times and only return the optimal path</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">findpath</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <h2>Parameters</h2>
+<p>filename : str
+    The input file location</p>
+<h2>Returns</h2>
+<p>&lsquo; &lsquo;.join(cheminOptimal) : str
+    Optimal path</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nd</span><span class="p">,</span> <span class="n">grilleList</span><span class="p">,</span> <span class="n">robots</span> <span class="o">=</span> <span class="n">formatForClean</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">lenoptimal</span> <span class="o">=</span> <span class="n">nx</span><span class="o">*</span><span class="n">ny</span><span class="o">*</span><span class="n">nd</span>
+    <span class="n">iteration</span><span class="p">,</span> <span class="n">greed1</span><span class="p">,</span> <span class="n">greed2</span> <span class="o">=</span> <span class="n">setparameters</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">cheminOptimal</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteration</span><span class="p">):</span>
+        <span class="n">piece</span> <span class="o">=</span> <span class="n">Cleaning</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">grilleList</span><span class="p">,</span> <span class="n">robots</span><span class="p">)</span>
+        <span class="n">chemin</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">lenoptimal</span><span class="p">,</span> <span class="n">greed1</span><span class="p">,</span> <span class="n">greed2</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">chemin</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chemin</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">lenoptimal</span><span class="p">:</span>
+                <span class="n">lenoptimal</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chemin</span><span class="p">)</span>
+                <span class="n">cheminOptimal</span> <span class="o">=</span> <span class="n">chemin</span>
+
+    <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cheminOptimal</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Check if some input path clean the room</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">checkpath</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">grilleList</span><span class="p">,</span> <span class="n">robots</span> <span class="o">=</span> <span class="n">formatForClean</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">piece</span> <span class="o">=</span> <span class="n">Cleaning</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">grilleList</span><span class="p">,</span> <span class="n">robots</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">piece</span><span class="o">.</span><span class="n">check_cleaning</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>Compute some move and return robot final position</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">compute_move</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">navig</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">grilleList</span><span class="p">,</span> <span class="n">robots</span> <span class="o">=</span> <span class="n">formatForClean</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">piece</span> <span class="o">=</span> <span class="n">Cleaning</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">grilleList</span><span class="p">,</span> <span class="n">robots</span><span class="p">)</span>
+    <span class="n">positionRobotJoueur</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">robots</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
+
+    <span class="n">casesConnexes</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="n">positionRobotJoueur</span><span class="p">]</span>
+    <span class="n">directionPossible</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">depl</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">depl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">casesConnexes</span><span class="p">)</span> <span class="k">if</span> <span class="n">depl</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+    <span class="n">navigation</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">pointsCardinauxReverse</span><span class="p">(</span><span class="n">navig</span><span class="p">)</span>
+    <span class="n">caseNext</span> <span class="o">=</span> <span class="n">directionPossible</span><span class="p">[</span><span class="n">navigation</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <h1>free the old box (we add it to its neighbors)</h1>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">piece</span><span class="o">.</span><span class="n">free</span><span class="p">(</span><span class="n">positionRobotJoueur</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <p>we go in the direction of navigation as long as there is no problem</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">while</span><span class="p">(</span><span class="n">caseNext</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">caseCurrent</span> <span class="o">=</span> <span class="n">caseNext</span>
+        <span class="n">piece</span><span class="o">.</span><span class="n">casesPropre</span><span class="p">[</span><span class="n">caseCurrent</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">caseNext</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="n">caseCurrent</span><span class="p">][</span><span class="n">navigation</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>we update the robot position</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">piece</span><span class="o">.</span><span class="n">robots</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">caseCurrent</span>
+    <span class="k">return</span> <span class="n">caseCurrent</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>set iteration and greed interval for an input file</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">setparameters</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <h2>Parameters</h2>
+<p>filename : str
+    The input file location</p>
+<h2>Returns</h2>
+<p>iteration
+    Number of cleaning iterations
+epsilon, epsilon+gamma
+    Interval for greedy method (see our report)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Case_Aspi_R_0.txt&quot;</span><span class="p">):</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Case_Aspi_R_1.txt&quot;</span><span class="p">):</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Case_Aspi_R_2.txt&quot;</span><span class="p">):</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">10000</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Case_Aspi_R_3.txt&quot;</span><span class="p">):</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">200000</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.15</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.2</span>
+    <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Case_Aspi_R_4.txt&quot;</span><span class="p">):</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">60000</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.15</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.8</span>
+    <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Case_Aspi_R_5.txt&quot;</span><span class="p">):</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">20000</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Case_Aspi_R_6.txt&quot;</span><span class="p">):</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">200000</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.2</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Case_Aspi_R_7.txt&quot;</span><span class="p">):</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">40000</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.15</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">500000</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.15</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.15</span>
+
+    <span class="k">return</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">+</span><span class="n">gamma</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">cheminOptimal</span> <span class="o">=</span> <span class="n">findpath</span><span class="p">(</span><span class="s2">&quot;input/Case_Aspi_R_7.txt&quot;</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+    <span class="nb">min</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_time</span><span class="o">-</span><span class="n">start_time</span><span class="p">)</span><span class="o">//</span><span class="mi">60</span>
+    <span class="n">sec</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_time</span><span class="o">-</span><span class="n">start_time</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;-----------------------------&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The optimal path is : &quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">cheminOptimal</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;of size &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cheminOptimal</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span> <span class="o">+</span> <span class="s1">&#39; total displacements&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;en &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">min</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; minutes and &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;{:.2f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sec</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; seconds&#39;</span><span class="p">)</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
