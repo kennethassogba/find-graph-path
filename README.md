@@ -1,6 +1,8 @@
-# Python project
 # Some algorithms for solving graph path finding problems
-Our code includes :
+
+This project comes from the python course of my master [Mathematical Engineering](https://m2ingmath.math.upmc.fr/impe/). The objective is to find the shortest path between two points of a cartesian grid, which we will represent as a graph.
+
+The code includes :
 - 3 folders (input, Tests, docs) which contain what their name says
 - 2 modules (main.py, cleaning.py)
 - our reports in english and french
